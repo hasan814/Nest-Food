@@ -1,4 +1,5 @@
-import { Column, Entity, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, UpdateDateColumn } from "typeorm";
+import { UserAddressEntity } from "./address.entity";
 import { BaseEntity } from "src/common/abstract/base.entity";
 import { EntityName } from "src/common/enums/entity.enum";
 
@@ -19,6 +20,10 @@ export class UserEntity extends BaseEntity {
   score: number
   @Column({ nullable: true })
   agentId: number
+  @CreateDateColumn({ type: "time with time zone" })
+  created_at: Date
   @UpdateDateColumn({ type: "time with time zone" })
   update_at: Date
+  @OneToMany(() => UserAddressEntity, address => address.user)
+  addressList: UserAddressEntity[]
 }
