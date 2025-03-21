@@ -1,4 +1,5 @@
 export enum EntityName {
   User = "user",
-  UserAddress = 'user_address'
+  Category = 'Category',
+  UserAddress = 'user_address',
 }
