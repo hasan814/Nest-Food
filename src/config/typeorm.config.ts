@@ -2,6 +2,7 @@ import { TypeOrmModuleOptions } from "@nestjs/typeorm"
 import { CategoryEntity } from "src/modules/category/entities/category.entity"
 import { AddressEntity } from "src/modules/user/entities/address.entity"
 import { UserEntity } from "src/modules/user/entities/user.entity"
+import { OTPEntity } from "src/modules/user/entities/otp.entity"
 
 
 export function TypeOrmConfig(): TypeOrmModuleOptions {
@@ -16,9 +17,10 @@ export function TypeOrmConfig(): TypeOrmModuleOptions {
     autoLoadEntities: false,
     synchronize: true,
     entities: [
-      CategoryEntity,
+      OTPEntity,
       UserEntity,
-      AddressEntity
+      AddressEntity,
+      CategoryEntity,
     ]
   }
 }
