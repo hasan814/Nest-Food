@@ -56,5 +56,12 @@ export class SupplementaryInfoDto {
   @ApiProperty()
   @IsIdentityCard("IR")
   national_code: string
+}
 
+export class AcceptedDocsDto {
+  @ApiProperty({ format: "binary" })
+  acceptedDoc: string
+
+  @ApiProperty({ format: "binary" })
+  image: string
 }

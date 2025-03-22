@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Inject, Injectable, Scope, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException, Scope, UnauthorizedException } from '@nestjs/common';
 import { BadRequestMessage, ConflictMessage, NotFoundMessage, PublicMessage, SupplierStatus } from 'src/common/enums/message.enum';
 import { SupplementaryInfoDto, SupplierSignDto } from '../dto/supplier.dto';
 import { SupplierOTPEntity } from '../entities/supplier-otp.entity';
@@ -10,6 +10,8 @@ import { CheckOtpDto } from 'src/modules/auth/dto/otp.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import { randomInt } from 'crypto';
+import { TDocument } from '../types/doument.type';
+import { S3Service } from 'src/modules/s3/s3.service';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 
@@ -20,8 +22,15 @@ export class SupplierService {
     @InjectRepository(SupplierOTPEntity) private supplierOtpRepository: Repository<SupplierOTPEntity>,
     private categoryService: CategoryService,
     private jwtService: JwtService,
+    private s3Service: S3Service,
     @Inject(REQUEST) private req: Request
   ) { }
+
+  private getSupplierId(): number {
+    const user = this.req.user;
+    if (!user || !('id' in user)) throw new UnauthorizedException("Invalid user");
+    return user.id;
+  }
 
   async signup(supplierSignDto: SupplierSignDto) {
     const { categoryId, city, invite_code, manager_family, manager_name, phone, store_name } = supplierSignDto
@@ -96,7 +105,7 @@ export class SupplierService {
   }
 
   async saveSupplementaryInfo(infoDto: SupplementaryInfoDto) {
-    const { id } = this.req.user
+    const id = this.getSupplierId();
     const { email, national_code } = infoDto
     let supplier = await this.supplierRepository.findOneBy({ national_code })
     if (supplier && supplier.id !== id) throw new ConflictException(ConflictMessage.NationalCode)
@@ -105,4 +114,19 @@ export class SupplierService {
     await this.supplierRepository.update({ id }, { email, national_code, status: SupplierStatus.SupplementaryInfo })
     return { message: PublicMessage.Updated }
   }
+
+  async uploadDocuments(files: TDocument) {
+    const id = this.getSupplierId();
+    const { image, acceptedDoc } = files;
+    const supplier = await this.supplierRepository.findOneBy({ id });
+    if (!supplier) throw new NotFoundException(NotFoundMessage.NotFoundSupplier);
+    const imageResult = await this.s3Service.uploadFile(image[0], 'images');
+    const docsResult = await this.s3Service.uploadFile(acceptedDoc[0], 'acceptedDoc');
+    if (imageResult) supplier.image = imageResult.Location;
+    if (docsResult) supplier.document = docsResult.Location;
+    supplier.status = SupplierStatus.UploadedDocument;
+    await this.supplierRepository.save(supplier);
+    return { message: PublicMessage.Created };
+  }
+
 }

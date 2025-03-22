@@ -10,11 +10,18 @@ import { SupplierStatus } from "src/common/enums/message.enum";
 export class SupplierEntity extends BaseEntity {
   @Column()
   manager_name: string
+
   @Column()
   manager_family: string;
 
   @Column()
   store_name: string;
+
+  @Column({ nullable: true })
+  image: string;
+
+  @Column({ nullable: true })
+  document: string;
 
   @Column()
   phone: string;

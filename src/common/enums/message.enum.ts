@@ -23,11 +23,12 @@ export enum AuthMessage {
 
 
 export enum NotFoundMessage {
-  UserNotFound = "The specified user was not found.",
   OtpNotFound = "OTP record not found.",
-  ResourceNotFound = "The requested resource was not found.",
+  UserNotFound = "The specified user was not found.",
   NotFoundPost = "The requested post was not found.",
   NotFoundCategory = "The requested category was not found.",
+  ResourceNotFound = "The requested resource was not found.",
+  NotFoundSupplier = "The requested Supplier was not found.",
 }
 
 export enum ValidationMessage {
@@ -77,6 +78,7 @@ export enum SupplierStatus {
   Verified = "VERIFIED",
   Rejected = "REJECTED",
   Suspended = "SUSPENDED",
+  Accept = "ACCEPTED",
   Contract = "CONTRACT_SIGNED",
   UploadedDocument = "DOCUMENTS_UPLOADED",
   SupplementaryInfo = "SUPPLEMENTARY_INFO",

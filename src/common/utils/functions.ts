@@ -20,6 +20,7 @@ export const ImageValidationPipe = (options?: {
 export const isBoolean = (value: any) => {
   return ["false", false, "true", true].includes(value)
 }
+
 export const toBoolean = (value: any) => {
   return [true, 'true'].includes(value)
     ? true

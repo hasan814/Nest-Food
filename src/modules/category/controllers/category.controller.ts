@@ -49,7 +49,7 @@ export class CategoryController {
     return this.categoryService.findBySlug(slug)
   }
 
-  @Patch(';id')
+  @Patch(':id')
   @UseInterceptors(FileInterceptor('image'))
   @ApiConsumes(SwaggerConsumes.MultipartData)
   update(
