@@ -68,5 +68,16 @@ export enum ConflictMessage {
   Email = "This email is already associated with an existing account.",
   Phone = "This phone number is already linked to another account.",
   Username = "This username is already taken. Please choose another.",
-  Supplier = "This supplier is already taken. Please choose another."
+  Supplier = "This supplier is already taken. Please choose another.",
+  NationalCode = "This National Code is already exist. Please choose another.",
+}
+
+export enum SupplierStatus {
+  Register = "REGISTER",
+  Verified = "VERIFIED",
+  Rejected = "REJECTED",
+  Suspended = "SUSPENDED",
+  Contract = "CONTRACT_SIGNED",
+  UploadedDocument = "DOCUMENTS_UPLOADED",
+  SupplementaryInfo = "SUPPLEMENTARY_INFO",
 }

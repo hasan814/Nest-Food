@@ -6,6 +6,8 @@ import {
   IsNumber,
   IsMobilePhone,
   IsOptional,
+  IsIdentityCard,
+  IsEmail,
 } from 'class-validator';
 
 export class SupplierSignDto {
@@ -43,4 +45,16 @@ export class SupplierSignDto {
   @IsString()
   @IsOptional()
   invite_code: string;
+}
+
+
+export class SupplementaryInfoDto {
+  @ApiProperty()
+  @IsEmail()
+  email: string
+
+  @ApiProperty()
+  @IsIdentityCard("IR")
+  national_code: string
+
 }

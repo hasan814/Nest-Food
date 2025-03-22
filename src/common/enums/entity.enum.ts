@@ -1,8 +1,8 @@
 export enum EntityName {
   User = "user",
   Address = "address",
-  UserOtp = "userOtp",
+  UserOtp = "user_otp",
   Supplier = "supplier",
   Category = "categories",
-  SupplierOtp = "SupplierOtp"
+  SupplierOtp = "supplier_otp"
 }
