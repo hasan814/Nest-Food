@@ -18,6 +18,9 @@ export class CategoryEntity {
   image: string;
 
   @Column({ nullable: true })
+  imageKey: string;
+
+  @Column({ nullable: true })
   parentId?: number;
 
   @ManyToOne(() => CategoryEntity, category => category.children, { nullable: true, onDelete: 'SET NULL' })

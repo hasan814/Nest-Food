@@ -13,9 +13,13 @@ import {
   UseInterceptors,
   Get,
   Query,
+  Patch,
+  ParseIntPipe,
+  Param,
 } from '@nestjs/common';
 import { Pagination } from 'src/common/decorators/pagination.decorator';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { UpdateCategoryDto } from '../dto/update-category.dto';
 
 @Controller('category')
 export class CategoryController {
@@ -36,5 +40,16 @@ export class CategoryController {
   @Pagination()
   findAll(@Query() paginationDto: PaginationDto) {
     return this.categoryService.findAll(paginationDto)
+  }
+
+  @Patch(';id')
+  @UseInterceptors(FileInterceptor('image'))
+  @ApiConsumes(SwaggerConsumes.MultipartData)
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateCategoryDto: UpdateCategoryDto,
+    @UploadedFile(ImageValidationPipe()) image: Express.Multer.File,
+  ) {
+    return this.categoryService.update(id, updateCategoryDto, image)
   }
 }
