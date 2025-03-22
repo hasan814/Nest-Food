@@ -1,9 +1,10 @@
-import { Entity, Column } from 'typeorm';
-import { BaseEntity } from 'src/common/abstract/base-entity';
-import { EntityName } from 'src/common/enums/entity.enum';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 
-@Entity(EntityName.Category)
-export class CategoryEntity extends BaseEntity {
+@Entity('categories')
+export class CategoryEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column()
   title: string;
 
@@ -13,9 +14,17 @@ export class CategoryEntity extends BaseEntity {
   @Column()
   show: boolean;
 
+  @Column()
+  image: string;
+
   @Column({ nullable: true })
   parentId?: number;
 
-  @Column()
-  image: string;
+  @ManyToOne(() => CategoryEntity, category => category.children, { nullable: true, onDelete: 'SET NULL' })
+  parent: CategoryEntity;
+
+  @OneToMany(() => CategoryEntity, category => category.parent)
+  children: CategoryEntity[];
 }
+
+

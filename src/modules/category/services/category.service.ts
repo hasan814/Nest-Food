@@ -1,8 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictMessage, NotFoundMessage, PublicMessage } from 'src/common/enums/message.enum';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { isBoolean, toBoolean } from 'src/common/utils/functions';
 import { CreateCategoryDto } from '../dto/category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ConflictMessage, PublicMessage } from 'src/common/enums/message.enum';
 import { CategoryEntity } from '../entities/category.entity';
 import { Repository } from 'typeorm';
 import { S3Service } from 'src/modules/s3/s3.service';
@@ -16,20 +16,29 @@ export class CategoryService {
 
   async create(createCategoryDto: CreateCategoryDto, image: Express.Multer.File) {
     const { Location } = await this.s3Service.uploadFile(image, "food-image")
-    let { title, slug, show } = createCategoryDto
+    let { title, slug, parentId, show } = createCategoryDto
     const category = await this.findOneBySlug(slug)
     if (category) throw new ConflictException(ConflictMessage.categoryTitle)
     if (isBoolean(show)) show = toBoolean(show)
-    await this.categoryRepository.insert({ title, slug, show, image: Location })
+    let parent: CategoryEntity | null = null
+    if (parentId && !isNaN(parentId)) parent = await this.findOneById(+parentId)
+    await this.categoryRepository.insert({ title, slug, show, image: Location, parentId: parent?.id })
     return { message: PublicMessage.CreatedCategory }
   }
 
-  findAll() {
-    return `This action returns all category`;
+  async findAll() {
+    const [categories, count] = await this.categoryRepository.findAndCount({
+      where: {},
+      relations: { parent: true },
+      select: { parent: { title: true } }
+    })
+    return { categories }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOneById(id: number) {
+    const category = await this.categoryRepository.findOneBy({ id })
+    if (!category) throw new NotFoundException(NotFoundMessage.NotFoundCategory)
+    return category
   }
 
   async findOneBySlug(slug: string) {

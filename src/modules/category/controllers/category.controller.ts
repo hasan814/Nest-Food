@@ -11,6 +11,7 @@ import {
   Body,
   UploadedFile,
   UseInterceptors,
+  Get,
 } from '@nestjs/common';
 
 @Controller('category')
@@ -26,5 +27,10 @@ export class CategoryController {
     @UploadedFile(ImageValidationPipe()) image: Express.Multer.File,
   ) {
     return this.categoryService.create(createCategoryDto, image)
+  }
+
+  @Get()
+  findAll() {
+    return this.categoryService.findAll()
   }
 }
