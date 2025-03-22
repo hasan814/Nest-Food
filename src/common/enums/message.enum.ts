@@ -54,6 +54,7 @@ export enum PublicMessage {
   unBookmark = "Item removed from your bookmarks.",
   UpdatedComment = "Comment updated successfully.",
   CreatedComment = "Comment created successfully.",
+  CreatedCategory = "Category created successfully.",
   VerifiedSuccessfully = "Verification was successful!",
   LogoutSuccess = "You have been logged out successfully.",
   Block = "You have blocked this item.",

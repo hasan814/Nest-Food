@@ -11,11 +11,12 @@ export class S3Service {
     this.s3 = new S3({
       credentials: {
         accessKeyId: process.env.S3_ACCESS_KEY,
-        secretAccessKey: process.env.S3_SECRET_KEY
+        secretAccessKey: process.env.S3_SECRET_KEY,
       },
-      endpoint: process.env.S3_ENDPOIT,
-      region: "default"
-    })
+      endpoint: process.env.S3_ENDPOINT,
+      region: 'default',
+      s3ForcePathStyle: true,
+    });
   }
 
   async uploadFile(file: Express.Multer.File, folderName: string) {

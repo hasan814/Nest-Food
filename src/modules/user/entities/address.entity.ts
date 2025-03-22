@@ -4,7 +4,7 @@ import { EntityName } from "src/common/enums/entity.enum";
 import { UserEntity } from "./user.entity";
 
 
-@Entity(EntityName.UserAddress)
+@Entity(EntityName.Address)
 export class AddressEntity extends BaseEntity {
   @Column()
   title: string
