@@ -4,7 +4,7 @@ import { EntityName } from "src/common/enums/entity.enum";
 import { UserEntity } from "./user.entity";
 
 
-@Entity(EntityName.Otp)
+@Entity(EntityName.UserOtp)
 export class OTPEntity extends BaseEntity {
   @Column()
   code: string

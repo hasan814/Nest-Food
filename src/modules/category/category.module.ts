@@ -9,5 +9,6 @@ import { Module } from '@nestjs/common';
   imports: [TypeOrmModule.forFeature([CategoryEntity])],
   controllers: [CategoryController],
   providers: [CategoryService, S3Service],
+  exports: [CategoryService],
 })
 export class CategoryModule { }

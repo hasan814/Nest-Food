@@ -1,4 +1,5 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm"
+import { SupplierOTPEntity } from "src/modules/supplier/entities/supplier-otp.entity"
 import { CategoryEntity } from "src/modules/category/entities/category.entity"
 import { SupplierEntity } from "src/modules/supplier/entities/supplier.entity"
 import { AddressEntity } from "src/modules/user/entities/address.entity"
@@ -23,6 +24,7 @@ export function TypeOrmConfig(): TypeOrmModuleOptions {
       AddressEntity,
       CategoryEntity,
       SupplierEntity,
+      SupplierOTPEntity,
     ]
   }
 }

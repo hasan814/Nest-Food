@@ -67,5 +67,6 @@ export enum ConflictMessage {
   categoryTitle = "A category with this title already exists.",
   Email = "This email is already associated with an existing account.",
   Phone = "This phone number is already linked to another account.",
-  Username = "This username is already taken. Please choose another."
+  Username = "This username is already taken. Please choose another.",
+  Supplier = "This supplier is already taken. Please choose another."
 }

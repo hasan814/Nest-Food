@@ -1,7 +1,8 @@
-import { SupplierEntity } from 'src/modules/supplier/entities/supplier.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { SupplierEntity } from 'src/modules/supplier/entities/supplier.entity';
+import { EntityName } from 'src/common/enums/entity.enum';
 
-@Entity('categories')
+@Entity(EntityName.Category)
 export class CategoryEntity {
   @PrimaryGeneratedColumn()
   id: number;

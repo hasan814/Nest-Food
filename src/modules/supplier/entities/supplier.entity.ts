@@ -1,4 +1,5 @@
-import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
+import { SupplierOTPEntity } from "./supplier-otp.entity";
 import { CategoryEntity } from "src/modules/category/entities/category.entity";
 import { BaseEntity } from "src/common/abstract/base-entity";
 import { EntityName } from "src/common/enums/entity.enum";
@@ -27,7 +28,7 @@ export class SupplierEntity extends BaseEntity {
   agentId: number;
 
   @Column({ nullable: true })
-  categoryId: string;
+  categoryId: number;
 
   @ManyToOne(() => CategoryEntity, category => category.suppliers, { onDelete: "SET NULL" })
   category: CategoryEntity
@@ -37,4 +38,11 @@ export class SupplierEntity extends BaseEntity {
 
   @OneToMany(() => SupplierEntity, supplier => supplier.agent)
   subsets: SupplierEntity[]
+
+  @Column({ nullable: true })
+  otpId: number
+
+  @OneToOne(() => SupplierOTPEntity, otp => otp.supplier)
+  @JoinColumn()
+  otp: SupplierOTPEntity
 }
