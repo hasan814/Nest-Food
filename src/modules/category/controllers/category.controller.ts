@@ -1,6 +1,7 @@
-import { MaxFileSizeValidator, ParseFilePipe, FileTypeValidator } from '@nestjs/common';
+import { ImageValidationPipe } from 'src/common/utils/functions';
 import { CreateCategoryDto } from '../dto/category.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { SwaggerConsumes } from 'src/common/enums/swagger-consume';
 import { ApiConsumes } from '@nestjs/swagger';
 
 import {
@@ -15,18 +16,10 @@ import {
 export class CategoryController {
   @Post()
   @UseInterceptors(FileInterceptor('image'))
-  @ApiConsumes('multipart/form-data')
+  @ApiConsumes(SwaggerConsumes.MultipartData)
   create(
     @Body() createCategoryDto: CreateCategoryDto,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 10 * 1024 * 1024 }),
-          new FileTypeValidator({ fileType: /(jpeg|png|jpg|webp)$/ }),
-        ],
-      }),
-    )
-    image: Express.Multer.File,
+    @UploadedFile(ImageValidationPipe()) image: Express.Multer.File,
   ) {
     return { createCategoryDto, image };
   }
