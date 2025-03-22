@@ -1,23 +1,33 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { MaxFileSizeValidator, ParseFilePipe, FileTypeValidator } from '@nestjs/common';
 import { CreateCategoryDto } from '../dto/category.dto';
-import { CategoryService } from '../services/category.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiConsumes } from '@nestjs/swagger';
+
+import {
+  Controller,
+  Post,
+  Body,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 
 @Controller('category')
 export class CategoryController {
-  constructor(private readonly categoryService: CategoryService) { }
-
   @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoryService.create(createCategoryDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.categoryService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoryService.findOne(+id);
+  @UseInterceptors(FileInterceptor('image'))
+  @ApiConsumes('multipart/form-data')
+  create(
+    @Body() createCategoryDto: CreateCategoryDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 10 * 1024 * 1024 }),
+          new FileTypeValidator({ fileType: /(jpeg|png|jpg|webp)$/ }),
+        ],
+      }),
+    )
+    image: Express.Multer.File,
+  ) {
+    return { createCategoryDto, image };
   }
 }
