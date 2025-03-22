@@ -16,6 +16,7 @@ import {
   Patch,
   ParseIntPipe,
   Param,
+  Delete,
 } from '@nestjs/common';
 import { Pagination } from 'src/common/decorators/pagination.decorator';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
@@ -42,6 +43,11 @@ export class CategoryController {
     return this.categoryService.findAll(paginationDto)
   }
 
+  @Get('/by-slug/:slug')
+  findBySlug(@Param('slug') slug: string) {
+    return this.categoryService.findBySlug(slug)
+  }
+
   @Patch(';id')
   @UseInterceptors(FileInterceptor('image'))
   @ApiConsumes(SwaggerConsumes.MultipartData)
@@ -51,5 +57,10 @@ export class CategoryController {
     @UploadedFile(ImageValidationPipe()) image: Express.Multer.File,
   ) {
     return this.categoryService.update(id, updateCategoryDto, image)
+  }
+
+  @Delete(":id")
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.categoryService.remove(id)
   }
 }

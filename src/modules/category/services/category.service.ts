@@ -57,15 +57,14 @@ export class CategoryService {
 
   async update(id: number, updateCategoryDto: UpdateCategoryDto, image: Express.Multer.File) {
     const { parentId, show, slug, title } = updateCategoryDto
-    const category = await this.categoryRepository.findOneBy({ id })
-    if (!category) throw new NotFoundException(NotFoundMessage.NotFoundCategory)
+    const category = await this.findOneById(id)
     const updateObject: DeepPartial<CategoryEntity> = {}
     if (!image) {
       const { Location, Key } = await this.s3Service.uploadFile(image, 'category')
       if (Location) {
         updateObject['image'] = Location
         updateObject['imageKey'] = Key
-        await this.s3Service.deleteFile(category?.imageKey)
+        if (category?.imageKey) await this.s3Service.deleteFile(category?.imageKey)
       }
     }
     if (title) updateObject['title'] = title
@@ -82,6 +81,21 @@ export class CategoryService {
     }
     await this.categoryRepository.update({ id }, updateObject)
     return { message: PublicMessage.Updated }
+  }
+
+  async remove(id: number) {
+    const category = await this.findOneById(id)
+    await this.categoryRepository.delete({ id })
+    return { message: PublicMessage.Deleted }
+  }
+
+  async findBySlug(slug: string) {
+    const category = await this.categoryRepository.findOne({
+      where: { slug },
+      relations: { children: true }
+    })
+    if (!category) throw new NotFoundException(NotFoundMessage.NotFoundCategory)
+    return { category }
   }
 
 }
