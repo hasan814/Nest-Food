@@ -1,8 +1,8 @@
 import { CheckOtpDto, SendOtpDto } from '../dto/otp.dto';
 import { Body, Controller, Post } from '@nestjs/common';
+import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { SwaggerConsumes } from 'src/common/enums/swagger-consume';
 import { AuthService } from '../services/auth.service';
-import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
 @ApiTags("Auth")

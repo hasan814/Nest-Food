@@ -1,3 +1,4 @@
+import { SupplierEntity } from 'src/modules/supplier/entities/supplier.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity('categories')
@@ -28,6 +29,9 @@ export class CategoryEntity {
 
   @OneToMany(() => CategoryEntity, category => category.parent)
   children: CategoryEntity[];
+
+  @OneToMany(() => SupplierEntity, supplier => supplier.category)
+  suppliers: SupplierEntity[];
 }
 
 
