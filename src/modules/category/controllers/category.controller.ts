@@ -12,7 +12,10 @@ import {
   UploadedFile,
   UseInterceptors,
   Get,
+  Query,
 } from '@nestjs/common';
+import { Pagination } from 'src/common/decorators/pagination.decorator';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('category')
 export class CategoryController {
@@ -30,7 +33,8 @@ export class CategoryController {
   }
 
   @Get()
-  findAll() {
-    return this.categoryService.findAll()
+  @Pagination()
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.categoryService.findAll(paginationDto)
   }
 }

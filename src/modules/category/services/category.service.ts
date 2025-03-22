@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from '../entities/category.entity';
 import { Repository } from 'typeorm';
 import { S3Service } from 'src/modules/s3/s3.service';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { paginationGenerator, paginationSolver } from 'src/common/utils/pagination.util';
 
 @Injectable()
 export class CategoryService {
@@ -26,13 +28,20 @@ export class CategoryService {
     return { message: PublicMessage.CreatedCategory }
   }
 
-  async findAll() {
+  async findAll(paginationDto: PaginationDto) {
+    const { limit, page, skip } = paginationSolver(paginationDto.page, paginationDto.limit)
     const [categories, count] = await this.categoryRepository.findAndCount({
       where: {},
       relations: { parent: true },
-      select: { parent: { title: true } }
+      select: { parent: { title: true } },
+      skip,
+      take: limit,
+      order: { id: "DESC" }
     })
-    return { categories }
+    return {
+      categories,
+      ...paginationGenerator(count, page, limit),
+    };
   }
 
   async findOneById(id: number) {
