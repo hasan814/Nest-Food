@@ -21,12 +21,12 @@ export class CategoryService {
     const { Location, Key } = await this.s3Service.uploadFile(image, "food-image")
     let { title, slug, parentId, show } = createCategoryDto
     const category = await this.findOneBySlug(slug)
-    if (category) throw new ConflictException(ConflictMessage.categoryTitle)
+    if (category) throw new ConflictException(ConflictMessage.ItemAlreadyInBasket)
     if (isBoolean(show)) show = toBoolean(show)
     let parent: CategoryEntity | null = null
     if (parentId && !isNaN(parentId)) parent = await this.findOneById(+parentId)
     await this.categoryRepository.insert({ title, slug, show, image: Location, parentId: parent?.id, imageKey: Key })
-    return { message: PublicMessage.CreatedCategory }
+    return { message: PublicMessage.Created }
   }
 
   async findAll(paginationDto: PaginationDto) {
@@ -76,7 +76,7 @@ export class CategoryService {
     }
     if (slug) {
       const category = await this.categoryRepository.findOneBy({ slug })
-      if (category && category.id !== id) throw new ConflictException(ConflictMessage.categoryTitle)
+      if (category && category.id !== id) throw new ConflictException(ConflictMessage.Exist)
       updateObject['slug'] = slug
     }
     await this.categoryRepository.update({ id }, updateObject)

@@ -35,7 +35,7 @@ export class SupplierService {
   async signup(supplierSignDto: SupplierSignDto) {
     const { categoryId, city, invite_code, manager_family, manager_name, phone, store_name } = supplierSignDto
     const supplier = await this.supplierRepository.findOneBy({ phone })
-    if (supplier) throw new ConflictException(ConflictMessage.Supplier)
+    if (supplier) throw new ConflictException(ConflictMessage.Exist)
     const category = await this.categoryService.findOneById(categoryId)
     let agent: SupplierEntity | null = null
     if (invite_code) agent = await this.supplierRepository.findOneBy({ invite_code })
@@ -53,7 +53,7 @@ export class SupplierService {
     const account = this.supplierRepository.create(accountData);
     await this.supplierRepository.save(account);
     await this.createOtpForSupplier(account)
-    return { message: PublicMessage.SentOtp }
+    return { message: PublicMessage.OTP }
   }
 
   async createOtpForSupplier(supplier: SupplierEntity) {
@@ -113,9 +113,9 @@ export class SupplierService {
     const id = this.getSupplierId();
     const { email, national_code } = infoDto
     let supplier = await this.supplierRepository.findOneBy({ national_code })
-    if (supplier && supplier.id !== id) throw new ConflictException(ConflictMessage.NationalCode)
+    if (supplier && supplier.id !== id) throw new ConflictException(ConflictMessage.CodeAlreadyUsed)
     supplier = await this.supplierRepository.findOneBy({ email })
-    if (supplier && supplier.id !== id) throw new ConflictException(ConflictMessage.Email)
+    if (supplier && supplier.id !== id) throw new ConflictException(ConflictMessage.EmailExist)
     await this.supplierRepository.update({ id }, { email, national_code, status: SupplierStatus.SupplementaryInfo })
     return { message: PublicMessage.Updated }
   }

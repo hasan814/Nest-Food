@@ -119,6 +119,13 @@ export class MenuService {
     return item;
   }
 
+  async getOne(id: number) {
+    const item = await this.menuRepository.findOne({ where: { id } });
+    if (!item)
+      throw new NotFoundException(NotFoundMessage.NotFoundCategory);
+    return item;
+  }
+
   async delete(id: number) {
     await this.checkExist(id);
     await this.menuRepository.delete({ id });

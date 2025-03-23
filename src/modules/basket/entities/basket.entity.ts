@@ -10,10 +10,10 @@ import { UserEntity } from "src/modules/user/entities/user.entity";
 @Entity(EntityName.UserBasket)
 export class BasketEntity extends BaseEntity {
   @Column()
-  foodId: string
+  foodId: number
 
   @Column()
-  userId: string
+  userId: number
 
   @Column()
   count: number
@@ -21,8 +21,8 @@ export class BasketEntity extends BaseEntity {
   @Column({ enum: BasketDiscountType, type: "enum", nullable: true })
   type: string
 
-  @Column()
-  discountId: number
+  @Column({ nullable: true })
+  discountId: number | null;
 
   @ManyToOne(() => MenuEntity, food => food.baskets, { onDelete: "CASCADE" })
   food: MenuEntity
@@ -30,6 +30,11 @@ export class BasketEntity extends BaseEntity {
   @ManyToOne(() => UserEntity, user => user.basket, { onDelete: "CASCADE" })
   user: UserEntity
 
-  @ManyToOne(() => DiscountEntity, discount => discount.baskets, { onDelete: "CASCADE" })
-  discount: DiscountEntity
+  @ManyToOne(() => DiscountEntity, discount => discount.baskets, {
+    onDelete: "CASCADE",
+    nullable: true
+  })
+  discount: DiscountEntity | null;
+
+
 }

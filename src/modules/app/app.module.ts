@@ -3,10 +3,11 @@ import { SupplierModule } from '../supplier/supplier.module';
 import { TypeOrmConfig } from 'src/config/typeorm.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { BasketModule } from '../basket/basket.module';
 import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
-import { Module } from '@nestjs/common';
 import { MenuModule } from '../menu/menu.module';
+import { Module } from '@nestjs/common';
 
 @Module({
   imports: [
@@ -14,9 +15,10 @@ import { MenuModule } from '../menu/menu.module';
     TypeOrmModule.forRoot(TypeOrmConfig()),
     AuthModule,
     UserModule,
+    MenuModule,
+    BasketModule,
     CategoryModule,
     SupplierModule,
-    MenuModule,
   ],
   controllers: [],
   providers: [],

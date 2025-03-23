@@ -1,14 +1,3 @@
-export enum BadRequestMessage {
-  MenuError = "Invalid Menu Error.",
-  DiscountErrro = "Discount must be between 0 and 100.",
-  AlreadyRejected = "This item has already been rejected.",
-  AlreadyAccepted = "This item has already been accepted.",
-  SomeThingWrong = "Something went wrong. Please try again later.",
-  InvalidEmail = "The provided email is invalid. Please enter a valid email address.",
-  InvalidPhone = "The provided phone number is invalid. Please enter a valid phone number.",
-  InvalidCategories = "The selected categories are invalid. Please select valid categories.",
-}
-
 export enum InternalServerMessage {
   UploadFailed = "Unable to upload file to storage.",
   SaveFailed = "Could not save data. Please try again later.",
@@ -48,39 +37,7 @@ export enum ValidationMessage {
   PasswordTooWeak = "The provided password is too weak. Please use a stronger password.",
 }
 
-export enum PublicMessage {
-  Like = "You liked this item.",
-  Created = "Created successfully.",
-  Deleted = "Deleted successfully.",
-  Updated = "Updated successfully.",
-  SentOtp = "OTP sent successfully!",
-  Inserted = "Inserted successfully.",
-  Dislike = "You disliked this item.",
-  Bookmark = "Item added to your bookmarks.",
-  LoggedIn = "You have successfully logged in.",
-  UnFollowed = "You have unfollowed this item.",
-  Followed = "You are now following this item.",
-  DeletedComment = "Comment deleted successfully.",
-  unBookmark = "Item removed from your bookmarks.",
-  UpdatedComment = "Comment updated successfully.",
-  CreatedComment = "Comment created successfully.",
-  CreatedCategory = "Category created successfully.",
-  VerifiedSuccessfully = "Verification was successful!",
-  LogoutSuccess = "You have been logged out successfully.",
-  Block = "You have blocked this item.",
-  UnBlock = "You have unblocked this item."
-}
 
-
-
-export enum ConflictMessage {
-  categoryTitle = "A category with this title already exists.",
-  Email = "This email is already associated with an existing account.",
-  Phone = "This phone number is already linked to another account.",
-  Username = "This username is already taken. Please choose another.",
-  Supplier = "This supplier is already taken. Please choose another.",
-  NationalCode = "This National Code is already exist. Please choose another.",
-}
 
 export enum SupplierStatus {
   Register = "REGISTER",
@@ -92,3 +49,76 @@ export enum SupplierStatus {
   UploadedDocument = "DOCUMENTS_UPLOADED",
   SupplementaryInfo = "SUPPLEMENTARY_INFO",
 }
+
+export enum PublicMessage {
+  OTP = 'Otp sent successful.',
+  LoggedIn = 'Login successful.',
+  LoggedOut = 'Logout successful.',
+  Updated = 'Updated successfully.',
+  Deleted = 'Deleted successfully.',
+  Created = 'Created successfully.',
+  Retrieved = 'Retrieved successfully.',
+  Registered = 'Registration successful.',
+}
+
+export enum BadRequestMessage {
+  // General
+  NotFound = 'Item not found.',
+  SomeThingWrong = 'Something went wrong.',
+  MissingRequiredFields = 'Missing required fields.',
+  InvalidData = 'Invalid input data.',
+  AlreadyAccepted = 'Invalid combination of fields.',
+
+  // Auth
+  InvalidCredentials = 'Invalid email or password.',
+  TokenInvalid = 'Invalid or expired token.',
+  AccountDisabled = 'Your account is disabled.',
+
+  // Basket
+  InvalidBasketData = 'Invalid basket data.',
+  DiscountNotValid = 'Discount is not valid or expired.',
+  DiscountLimitExceeded = 'Discount usage limit exceeded.',
+
+  // Discount
+  InvalidDiscountType = 'Only one of amount or percent should be provided.',
+
+  // Menu
+  InvalidMenuData = 'Invalid menu item data.',
+
+  // Category
+  InvalidCategory = 'Invalid category data.',
+
+  // User
+  UserNotFound = 'User not found.',
+  PasswordsDoNotMatch = 'Passwords do not match.',
+
+  // Supplier
+  SupplierNotFound = 'Supplier not found.',
+}
+
+export enum ConflictMessage {
+  Exist = 'Conflict: This item already exists.',
+  EmailExist = 'Email is already registered.',
+  UsernameExist = 'Username is already taken.',
+
+  // Basket
+  DiscountAlreadyApplied = 'Discount already applied to this basket item.',
+  ItemAlreadyInBasket = 'Item already exists in the basket.',
+
+  // Discount
+  CodeAlreadyUsed = 'Discount code already used.',
+}
+
+export enum ForbiddenMessage {
+  NoPermission = 'You do not have permission to perform this action.',
+
+  // Discount
+  UnauthorizedDiscount = 'You are not allowed to use this discount.',
+
+  // User
+  NotAuthorized = 'You are not authorized to access this resource.',
+
+  // Supplier
+  SupplierAccessDenied = 'Supplier access denied.',
+}
+
