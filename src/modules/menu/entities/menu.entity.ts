@@ -4,6 +4,7 @@ import { MenuTypeEntity } from "./type.entity";
 import { FeedbackEntity } from "./feedback.entity";
 import { BaseEntity } from "src/common/abstract/base-entity";
 import { EntityName } from "src/common/enums/entity.enum";
+import { BasketEntity } from "src/modules/basket/entities/basket.entity";
 
 
 @Entity(EntityName.Menu)
@@ -43,4 +44,7 @@ export class MenuEntity extends BaseEntity {
 
   @OneToMany(() => FeedbackEntity, feedback => feedback.food)
   feedbacks: FeedbackEntity[]
+
+  @OneToMany(() => BasketEntity, basket => basket.food)
+  baskets: FeedbackEntity[]
 }

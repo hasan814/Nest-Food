@@ -4,7 +4,9 @@ import { CategoryEntity } from "src/modules/category/entities/category.entity"
 import { FeedbackEntity } from "src/modules/menu/entities/feedback.entity"
 import { SupplierEntity } from "src/modules/supplier/entities/supplier.entity"
 import { MenuTypeEntity } from "src/modules/menu/entities/type.entity"
+import { DiscountEntity } from "src/modules/discount/entities/discount.entity"
 import { AddressEntity } from "src/modules/user/entities/address.entity"
+import { BasketEntity } from "src/modules/basket/entities/basket.entity"
 import { UserEntity } from "src/modules/user/entities/user.entity"
 import { MenuEntity } from "src/modules/menu/entities/menu.entity"
 import { OTPEntity } from "src/modules/user/entities/otp.entity"
@@ -25,11 +27,13 @@ export function TypeOrmConfig(): TypeOrmModuleOptions {
       OTPEntity,
       MenuEntity,
       UserEntity,
+      BasketEntity,
       AddressEntity,
       CategoryEntity,
       SupplierEntity,
       MenuTypeEntity,
       FeedbackEntity,
+      DiscountEntity,
       SupplierOTPEntity,
     ]
   }

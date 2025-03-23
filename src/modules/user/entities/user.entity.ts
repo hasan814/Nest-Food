@@ -4,6 +4,7 @@ import { AddressEntity } from "./address.entity";
 import { BaseEntity } from "src/common/abstract/base-entity";
 import { EntityName } from "src/common/enums/entity.enum";
 import { OTPEntity } from "./otp.entity";
+import { BasketEntity } from "src/modules/basket/entities/basket.entity";
 
 @Entity(EntityName.User)
 export class UserEntity extends BaseEntity {
@@ -45,6 +46,9 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => FeedbackEntity, feedback => feedback.user)
   feedbacks: FeedbackEntity[]
+
+  @OneToMany(() => BasketEntity, basket => basket.user)
+  basket: BasketEntity[]
 
   @OneToOne(() => OTPEntity, otp => otp.user)
   @JoinColumn()
