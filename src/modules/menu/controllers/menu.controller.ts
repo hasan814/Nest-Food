@@ -30,7 +30,7 @@ export class MenuController {
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.menuService.findOne()
+    return this.menuService.findOne(id)
   }
 
   @Put(':id')
@@ -41,11 +41,11 @@ export class MenuController {
     @Body() foodDto: UploadFoodDto,
     @UploadedFile(ImageValidationPipe()) image: Express.Multer.File,
   ) {
-    return this.menuService.update()
+    return this.menuService.update(id, foodDto, image)
   }
 
   @Delete(':id')
   delete(@Param('id', ParseIntPipe) id: number) {
-    return this.menuService.delete()
+    return this.menuService.delete(id)
   }
 }

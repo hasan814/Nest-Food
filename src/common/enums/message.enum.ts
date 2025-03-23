@@ -9,6 +9,14 @@ export enum BadRequestMessage {
   InvalidCategories = "The selected categories are invalid. Please select valid categories.",
 }
 
+export enum InternalServerMessage {
+  UploadFailed = "Unable to upload file to storage.",
+  SaveFailed = "Could not save data. Please try again later.",
+  UpdateFailed = "Failed to update the item.",
+  DeleteFailed = "Failed to delete the item.",
+  DatabaseError = "Database Error.",
+}
+
 
 
 export enum AuthMessage {
