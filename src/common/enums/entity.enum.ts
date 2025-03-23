@@ -1,13 +1,16 @@
 export enum EntityName {
   Menu = "menu",
   User = "user",
+  Order = "order",
   Address = "address",
+  Payment = "payment",
   UserOtp = "user_otp",
   Supplier = "supplier",
   Feedback = "feedback",
   Discount = "discount",
   MenuType = "menu_type",
   Category = "categories",
+  OrderItem = "order_item",
   UserBasket = "user_basket",
   SupplierOtp = "supplier_otp",
 }

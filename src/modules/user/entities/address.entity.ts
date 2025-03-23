@@ -1,4 +1,6 @@
-import { Column, CreateDateColumn, Entity, ManyToOne } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany } from "typeorm";
+import { PaymentEntity } from "src/modules/payment/entities/payment.entity";
+import { OrderEntity } from "src/modules/order/entities/order.entity";
 import { BaseEntity } from "src/common/abstract/base-entity";
 import { EntityName } from "src/common/enums/entity.enum";
 import { UserEntity } from "./user.entity";
@@ -29,4 +31,12 @@ export class AddressEntity extends BaseEntity {
 
   @ManyToOne(() => UserEntity, user => user.addressList, { onDelete: "CASCADE" })
   user: UserEntity
+
+  @OneToMany(() => OrderEntity, order => order.address)
+  orders: OrderEntity[];
+
+  @OneToMany(() => PaymentEntity, payment => payment.user)
+  payments: PaymentEntity[];
+
+
 }
