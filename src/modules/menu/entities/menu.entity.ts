@@ -11,11 +11,17 @@ export class MenuEntity extends BaseEntity {
   @Column()
   image: string
 
+  @Column()
+  name: string
+
+  @Column()
+  key: string
+
   @Column({ type: "double" })
   price: number
 
   @Column({ type: "double", default: 0 })
-  dicount: number
+  discount: number
 
   @Column({ type: "double" })
   score: number

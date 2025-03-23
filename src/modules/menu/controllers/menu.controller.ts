@@ -15,10 +15,10 @@ export class MenuController {
   @ApiConsumes(SwaggerConsumes.MultipartData)
   @UseInterceptors(UploadFileS3('image'))
   create(
-    @Body() createMenuDto: FoodDto,
+    @Body() foodDto: FoodDto,
     @UploadedFile(ImageValidationPipe()) image: Express.Multer.File,
   ) {
-    return this.menuService.create()
+    return this.menuService.create(foodDto, image)
   }
 
   @Get()

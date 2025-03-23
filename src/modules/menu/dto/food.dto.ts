@@ -31,7 +31,7 @@ export class FoodDto {
   @IsNumber()
   @Min(0)
   @Max(5)
-  score: number;
+  typeId: number;
 }
 
 export class UploadFoodDto extends PartialType(FoodDto) { }

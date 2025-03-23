@@ -1,9 +1,9 @@
 export enum BadRequestMessage {
+  MenuError = "Invalid Menu Error.",
+  DiscountErrro = "Discount must be between 0 and 100.",
   AlreadyRejected = "This item has already been rejected.",
   AlreadyAccepted = "This item has already been accepted.",
   SomeThingWrong = "Something went wrong. Please try again later.",
-  InvalidLoginData = "The provided login information is incorrect.",
-  InvalidRegisterData = "The provided registration data is incorrect.",
   InvalidEmail = "The provided email is invalid. Please enter a valid email address.",
   InvalidPhone = "The provided phone number is invalid. Please enter a valid phone number.",
   InvalidCategories = "The selected categories are invalid. Please select valid categories.",
