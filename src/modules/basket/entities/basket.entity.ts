@@ -18,9 +18,6 @@ export class BasketEntity extends BaseEntity {
   @Column()
   count: number
 
-  @Column({ enum: BasketDiscountType, type: "enum", nullable: true })
-  type: string
-
   @Column({ nullable: true })
   discountId: number | null;
 

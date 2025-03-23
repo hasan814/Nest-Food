@@ -1,9 +1,9 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateDiscountDto } from '../dto/create-discount.dto';
 import { UpdateDiscountDto } from '../dto/update-discount.dto';
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { DiscountEntity } from '../entities/discount.entity';
-import { BadRequestMessage, ConflictMessage, PublicMessage } from 'src/common/enums/message.enum';
+import { BadRequestMessage, ConflictMessage, NotFoundMessage, PublicMessage } from 'src/common/enums/message.enum';
 import { DeepPartial, Repository } from 'typeorm';
 
 @Injectable()
@@ -34,6 +34,12 @@ export class DiscountService {
   async checkExistCode(code: string) {
     const discount = await this.discountRepository.findOneBy({ code })
     if (discount) throw new ConflictException(ConflictMessage.Exist)
+    return discount
+  }
+
+  async findOneByCode(code: string) {
+    const discount = await this.discountRepository.findOneBy({ code })
+    if (!discount) throw new NotFoundException(NotFoundMessage.OtpNotFound)
     return discount
   }
 
