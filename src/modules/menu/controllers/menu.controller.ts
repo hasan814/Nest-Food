@@ -5,6 +5,7 @@ import { ImageValidationPipe } from 'src/common/utils/functions';
 import { SwaggerConsumes } from 'src/common/enums/swagger-consume';
 import { UploadFileS3 } from 'src/common/interceptors/upload-file.interceptor';
 import { MenuService } from '../services/menu.service';
+import { SkipAuth } from 'src/common/decorators/skip-auth.decorator';
 
 @Controller('menu')
 @ApiTags("Menu")
@@ -21,9 +22,10 @@ export class MenuController {
     return this.menuService.create(foodDto, image)
   }
 
-  @Get()
-  findAll() {
-    return this.menuService.findAll()
+  @Get('/get-menu-by-id/:id')
+  @SkipAuth()
+  findAll(@Param("id", ParseIntPipe) id: number) {
+    return this.menuService.findAll(id)
   }
 
   @Get(':id')

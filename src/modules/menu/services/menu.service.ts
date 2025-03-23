@@ -8,14 +8,16 @@ import { REQUEST } from "@nestjs/core";
 import { MenuTypeService } from "./type.service";
 import { BadRequestMessage, PublicMessage } from "src/common/enums/message.enum";
 import { S3Service } from "src/modules/s3/s3.service";
+import { MenuTypeEntity } from "../entities/type.entity";
 
 
 @Injectable({ scope: Scope.REQUEST })
 export class MenuService {
   constructor(
     @InjectRepository(MenuEntity) private menuRepository: Repository<MenuEntity>,
+    @InjectRepository(MenuTypeEntity) private menuTypeRepository: Repository<MenuTypeEntity>,
     @Inject(REQUEST) private req: Request,
-    private typeServoce: MenuTypeService,
+    private typeService: MenuTypeService,
     private s3Service: S3Service,
   ) { }
 
@@ -28,42 +30,43 @@ export class MenuService {
   }
 
   async create(foodDto: FoodDto, image: Express.Multer.File) {
-    const supplierId = this.getUserId()
-    const { name, description, discount, price, typeId } = foodDto
-    if (!name || !description || typeof price !== 'number' || price < 0)
-      throw new BadRequestException(BadRequestMessage.SomeThingWrong)
-    if (discount < 0 || discount > 100)
-      throw new BadRequestException(BadRequestMessage.DiscountErrro)
-    if (!typeId || isNaN(typeId))
-      throw new BadRequestException(BadRequestMessage.MenuError)
-    const type = await this.typeServoce.findOnById(typeId)
-    let imageUrl: string, imageKey: string
-    try {
-      const uploadResult = await this.s3Service.uploadFile(image, "menu-items")
-      imageUrl = uploadResult.Location
-      imageKey = uploadResult.Key
-    } catch (error) {
-      throw new InternalServerErrorException(BadRequestMessage.SomeThingWrong)
-    }
+    const supplierId = this.getUserId();
 
-    const newItem = this.menuRepository.create({
-      name,
-      price,
-      discount,
-      description,
-      supplierId,
-      typeId: type.id,
-      image: imageUrl,
-      key: imageKey
-    })
-    try {
-      await this.menuRepository.save(newItem)
-    } catch (error) {
-      throw new InternalServerErrorException(BadRequestMessage.SomeThingWrong)
+    if (!image) {
+      throw new BadRequestException("Image file is required.");
     }
-    return { message: PublicMessage.Created }
+    const type = await this.typeService.findOnById(foodDto.typeId);
+    let imageUrl: string, imageKey: string;
+    try {
+      const uploadResult = await this.s3Service.uploadFile(image, "menu-items");
+      imageUrl = uploadResult.Location;
+      imageKey = uploadResult.Key;
+    } catch (error) {
+      throw new InternalServerErrorException("Image upload failed.");
+    }
+    const newItem = this.menuRepository.create({
+      ...foodDto,
+      supplierId,
+      image: imageUrl,
+      key: imageKey,
+      typeId: type.id,
+    });
+    try {
+      await this.menuRepository.save(newItem);
+    } catch (error) {
+      throw new InternalServerErrorException("Failed to save menu item.");
+    }
+    return { message: PublicMessage.Created };
   }
-  async findAll() { }
+
+
+  async findAll(supplierId: number) {
+    return await this.menuTypeRepository.find({
+      where: { supplierId },
+      relations: { items: true }
+    })
+  }
+
   async findOne() { }
   async delete() { }
   async update() { }
