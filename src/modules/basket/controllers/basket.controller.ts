@@ -27,9 +27,8 @@ export class BasketController {
   @Delete('/discount')
   @ApiConsumes(SwaggerConsumes.UrlEncoded, SwaggerConsumes.Json)
   removeDiscount(@Body() basketDto: DiscountBasketDto) {
-    return this.basketService.removeDisount(basketDto)
+    return this.basketService.removeDiscount(basketDto)
   }
-
 
   @Get()
   getBasket() { }

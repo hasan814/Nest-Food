@@ -33,6 +33,10 @@ export class MenuEntity extends BaseEntity {
   @Column()
   typeId: number
 
+  @Column({ default: true })
+  is_active: boolean;
+
+
   @Column()
   supplierId: number
 
