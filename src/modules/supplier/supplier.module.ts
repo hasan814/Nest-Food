@@ -17,5 +17,6 @@ import { Module } from '@nestjs/common';
   ],
   controllers: [SupplierController],
   providers: [SupplierService, S3Service, CategoryService, JwtService],
+  exports: [SupplierService, JwtService, S3Service, TypeOrmModule]
 })
 export class SupplierModule { }

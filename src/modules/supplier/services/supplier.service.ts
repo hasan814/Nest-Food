@@ -96,7 +96,12 @@ export class SupplierService {
       if (typeof payload === "object" && payload?.id) {
         const supplier = await this.supplierRepository.findOneBy({ id: payload.id })
         if (!supplier) throw new UnauthorizedException(PublicMessage.LoggedIn)
-        return supplier
+        return {
+          id: supplier.id,
+          first_name: supplier.manager_name,
+          last_name: supplier.manager_family,
+          mobile: supplier.phone,
+        }
       }
       throw new UnauthorizedException(PublicMessage.LoggedIn)
     } catch (error) {

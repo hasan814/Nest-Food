@@ -1,9 +1,12 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm"
 import { SupplierOTPEntity } from "src/modules/supplier/entities/supplier-otp.entity"
 import { CategoryEntity } from "src/modules/category/entities/category.entity"
+import { FeedbackEntity } from "src/modules/menu/entities/feedback.entity"
 import { SupplierEntity } from "src/modules/supplier/entities/supplier.entity"
+import { MenuTypeEntity } from "src/modules/menu/entities/type.entity"
 import { AddressEntity } from "src/modules/user/entities/address.entity"
 import { UserEntity } from "src/modules/user/entities/user.entity"
+import { MenuEntity } from "src/modules/menu/entities/menu.entity"
 import { OTPEntity } from "src/modules/user/entities/otp.entity"
 
 
@@ -20,10 +23,13 @@ export function TypeOrmConfig(): TypeOrmModuleOptions {
     synchronize: true,
     entities: [
       OTPEntity,
+      MenuEntity,
       UserEntity,
       AddressEntity,
       CategoryEntity,
       SupplierEntity,
+      MenuTypeEntity,
+      FeedbackEntity,
       SupplierOTPEntity,
     ]
   }

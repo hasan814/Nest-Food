@@ -1,9 +1,10 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
 import { SupplierOTPEntity } from "./supplier-otp.entity";
+import { MenuTypeEntity } from "src/modules/menu/entities/type.entity";
+import { SupplierStatus } from "src/common/enums/message.enum";
 import { CategoryEntity } from "src/modules/category/entities/category.entity";
 import { BaseEntity } from "src/common/abstract/base-entity";
 import { EntityName } from "src/common/enums/entity.enum";
-import { SupplierStatus } from "src/common/enums/message.enum";
 
 
 @Entity(EntityName.Supplier)
@@ -58,6 +59,9 @@ export class SupplierEntity extends BaseEntity {
 
   @OneToMany(() => SupplierEntity, supplier => supplier.agent)
   subsets: SupplierEntity[]
+
+  @OneToMany(() => MenuTypeEntity, type => type.supplier)
+  menuTypes: MenuTypeEntity[]
 
   @Column({ nullable: true })
   otpId: number

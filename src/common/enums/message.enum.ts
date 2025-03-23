@@ -23,6 +23,7 @@ export enum AuthMessage {
 
 
 export enum NotFoundMessage {
+  TypeNotFound = "Type not found.",
   OtpNotFound = "OTP record not found.",
   UserNotFound = "The specified user was not found.",
   NotFoundPost = "The requested post was not found.",

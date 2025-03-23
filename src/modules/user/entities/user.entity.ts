@@ -1,4 +1,5 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, UpdateDateColumn } from "typeorm";
+import { FeedbackEntity } from "src/modules/menu/entities/feedback.entity";
 import { AddressEntity } from "./address.entity";
 import { BaseEntity } from "src/common/abstract/base-entity";
 import { EntityName } from "src/common/enums/entity.enum";
@@ -41,6 +42,9 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => AddressEntity, address => address.user)
   addressList: AddressEntity[]
+
+  @OneToMany(() => FeedbackEntity, feedback => feedback.user)
+  feedbacks: FeedbackEntity[]
 
   @OneToOne(() => OTPEntity, otp => otp.user)
   @JoinColumn()
