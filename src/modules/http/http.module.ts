@@ -6,8 +6,8 @@ import { Global, Module } from "@nestjs/common";
 @Global()
 @Module({
   imports: [HttpModule.register({ maxRedirects: 5, timeout: 5000 })],
-  providers: [HttpService, ZarinpalService],
-  exports: [HttpService, ZarinpalService],
+  providers: [ZarinpalService],
+  exports: [ZarinpalService],
 })
 
 export class HttpApiModule { }

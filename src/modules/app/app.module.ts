@@ -10,6 +10,7 @@ import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
 import { MenuModule } from '../menu/menu.module';
 import { Module } from '@nestjs/common';
+import { HttpApiModule } from '../http/http.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { Module } from '@nestjs/common';
     PaymentModule,
     CategoryModule,
     SupplierModule,
+    HttpApiModule
   ],
   controllers: [],
   providers: [],

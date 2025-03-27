@@ -1,4 +1,5 @@
 import { PaymentController } from './controllers/payment.controller';
+import { ZarinpalService } from '../http/http.service';
 import { PaymentService } from './services/payment.service';
 import { DiscountEntity } from '../discount/entities/discount.entity';
 import { MenuTypeEntity } from '../menu/entities/type.entity';
@@ -10,6 +11,7 @@ import { OrderEntity } from '../order/entities/order.entity';
 import { MenuModule } from '../menu/menu.module';
 import { AuthModule } from '../auth/auth.module';
 import { MenuEntity } from '../menu/entities/menu.entity';
+import { HttpModule } from '@nestjs/axios';
 import { S3Service } from '../s3/s3.service';
 import { S3Module } from '../s3/s3.module';
 import { Module } from '@nestjs/common';
@@ -25,12 +27,13 @@ import { Module } from '@nestjs/common';
     ]),
     S3Module,
     MenuModule,
+    HttpModule,
     AuthModule,
     BasketModule,
-    DiscountModule
+    DiscountModule,
   ],
   controllers: [PaymentController],
-  providers: [PaymentService, S3Service],
+  providers: [PaymentService, S3Service, ZarinpalService],
 })
 
 export class PaymentModule { }

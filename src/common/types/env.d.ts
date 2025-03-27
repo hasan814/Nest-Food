@@ -24,5 +24,6 @@ namespace NodeJS {
     ZARINPAL_VERIFY_URL: string
     ZARINPAL_REQUEST_URL: string
     ZARINPALL_MERCHANT_ID: string
+    ZARINPAL_GATEWAY_URL: string
   }
 }
