@@ -5,8 +5,11 @@ import { DiscountEntity } from '../discount/entities/discount.entity';
 import { MenuTypeEntity } from '../menu/entities/type.entity';
 import { DiscountModule } from '../discount/discount.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AddressEntity } from '../user/entities/address.entity';
+import { PaymentEntity } from './entities/payment.entity';
 import { BasketEntity } from '../basket/entities/basket.entity';
 import { BasketModule } from '../basket/basket.module';
+import { OrderService } from '../order/services/order.service';
 import { OrderEntity } from '../order/entities/order.entity';
 import { MenuModule } from '../menu/menu.module';
 import { AuthModule } from '../auth/auth.module';
@@ -22,6 +25,8 @@ import { Module } from '@nestjs/common';
       MenuEntity,
       OrderEntity,
       BasketEntity,
+      AddressEntity,
+      PaymentEntity,
       MenuTypeEntity,
       DiscountEntity,
     ]),
@@ -33,7 +38,7 @@ import { Module } from '@nestjs/common';
     DiscountModule,
   ],
   controllers: [PaymentController],
-  providers: [PaymentService, S3Service, ZarinpalService],
+  providers: [PaymentService, S3Service, ZarinpalService, OrderService],
 })
 
 export class PaymentModule { }
