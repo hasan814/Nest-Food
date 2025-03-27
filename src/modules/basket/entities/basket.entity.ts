@@ -21,6 +21,9 @@ export class BasketEntity extends BaseEntity {
   @Column({ nullable: true })
   discountId: number | null;
 
+  @Column({ enum: BasketDiscountType, type: "enum", nullable: true })
+  type: string;
+
   @ManyToOne(() => MenuEntity, food => food.baskets, { onDelete: "CASCADE" })
   food: MenuEntity
 
@@ -32,6 +35,4 @@ export class BasketEntity extends BaseEntity {
     nullable: true
   })
   discount: DiscountEntity | null;
-
-
 }

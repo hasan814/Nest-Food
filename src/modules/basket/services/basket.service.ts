@@ -1,22 +1,16 @@
+import { BadRequestException, ConflictException, Inject } from '@nestjs/common';
+import { Injectable, NotFoundException, Scope } from '@nestjs/common';
 import { BasketDto, DiscountBasketDto } from '../dto/create-basket.dto';
+import { BasketMessage, PublicMessage } from 'src/common/enums/message.enum';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DiscountService } from 'src/modules/discount/services/discount.service';
 import { DiscountEntity } from 'src/modules/discount/entities/discount.entity';
-import { BasketMessage } from '../enums/messgae.enum';
 import { BasketEntity } from '../entities/basket.entity';
 import { MenuService } from 'src/modules/menu/services/menu.service';
 import { Repository } from 'typeorm';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 
-import {
-  BadRequestException,
-  ConflictException,
-  Inject,
-  Injectable,
-  NotFoundException,
-  Scope,
-} from '@nestjs/common';
 
 @Injectable({ scope: Scope.REQUEST })
 export class BasketService {
@@ -39,33 +33,23 @@ export class BasketService {
   async addToBasket(basketDto: BasketDto) {
     const userId = this.getUserId();
     const { foodId } = basketDto;
-
-    const food = await this.menuService.getOne(foodId);
-
+    await this.menuService.getOne(foodId);
     let basketItem = await this.basketRepository.findOne({
       where: { userId, foodId },
     });
-
-    if (basketItem) {
-      basketItem.count += 1;
-    } else {
-      basketItem = this.basketRepository.create({ foodId, userId, count: 1 });
-    }
-
+    if (basketItem) basketItem.count += 1;
+    else basketItem = this.basketRepository.create({ foodId, userId, count: 1 });
     await this.basketRepository.save(basketItem);
-    return { message: 'Added to basket' };
+    return { message: PublicMessage.AddedBasket };
   }
 
   async removeFormBasket(basketDto: BasketDto) {
     const userId = this.getUserId();
     const { foodId } = basketDto;
-
-    const food = await this.menuService.getOne(foodId);
-
+    await this.menuService.getOne(foodId);
     const basketItem = await this.basketRepository.findOne({
       where: { userId, foodId },
     });
-
     if (basketItem) {
       if (basketItem.count <= 1) {
         await this.basketRepository.delete({ id: basketItem.id });
@@ -73,9 +57,8 @@ export class BasketService {
         basketItem.count -= 1;
         await this.basketRepository.save(basketItem);
       }
-      return { message: 'Removed from basket' };
+      return { message: PublicMessage.BasketDeleted };
     }
-
     throw new NotFoundException(BasketMessage.BASKET_ITEM_NOT_FOUND);
   }
 
@@ -221,6 +204,6 @@ export class BasketService {
       discountId: discount.id,
       userId,
     });
-    return { message: 'Discount removed' };
+    return { message: BasketMessage.BASKET_ITEM_DELETE };
   }
 }

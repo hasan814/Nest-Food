@@ -22,6 +22,8 @@ export enum AuthMessage {
 export enum NotFoundMessage {
   TypeNotFound = "Type not found.",
   OtpNotFound = "OTP record not found.",
+  CodeNotFound = "Code record not found.",
+  NotFoundMenu = "The requested Menu was not found.",
   UserNotFound = "The specified user was not found.",
   NotFoundPost = "The requested post was not found.",
   NotFoundCategory = "The requested category was not found.",
@@ -53,13 +55,39 @@ export enum SupplierStatus {
 export enum PublicMessage {
   OTP = 'Otp sent successful.',
   LoggedIn = 'Login successful.',
+  Created = 'Created successfully',
   LoggedOut = 'Logout successful.',
   Updated = 'Updated successfully.',
   Deleted = 'Deleted successfully.',
-  Created = 'Created successfully.',
   Retrieved = 'Retrieved successfully.',
   Registered = 'Registration successful.',
+  MenuCreated = 'Menu created successfully',
+  MenuDeleted = 'Menu deleted successfully.',
+  DeletedMenu = 'Menu Deleted successfully.',
+  AddedBasket = 'Added to Basket Successfully.',
+  BasketDeleted = 'Basket Deleted successfully.',
+  UploadDoc = 'Documents Uploaded successfully.',
+  DiscountCreated = 'Discount Created successfully',
+  UpdatedInfo = 'Information Updated successfully.',
+  CategoryCreated = 'Category created successfully',
+  DiscountDeleted = 'Discount Deleted successfully.',
 }
+
+export enum BasketMessage {
+  FOOD_NOT_FOUND = 'Food not found',
+  EMPTY_BASKET = 'Basket is empty',
+  DISCOUNT_EXPIRED = 'Discount has expired',
+  BASKET_ITEM_NOT_FOUND = 'Basket item not found',
+  USER_NOT_FOUND = 'User not found or invalid user ID',
+  BASKET_ITEM_DELETE = 'Basket item Deleted Successfully',
+  DISCOUNT_LIMIT_REACHED = 'Discount usage limit reached',
+  DISCOUNT_ALREADY_USED = 'Discount already applied to basket',
+  DISCOUNT_NOT_FOUND_IN_BASKET = 'Discount not found in basket',
+  SUPPLIER_HAS_NO_ITEMS = 'Basket has no items from this supplier',
+  DISCOUNT_NOT_FOUND_OR_INACTIVE = 'Discount not found or inactive',
+  SUPPLIER_DISCOUNT_CONFLICT = 'Another discount from this supplier already exists',
+}
+
 
 export enum BadRequestMessage {
   // General
@@ -107,6 +135,9 @@ export enum ConflictMessage {
 
   // Discount
   CodeAlreadyUsed = 'Discount code already used.',
+
+  // Supplier
+  ExistSupplier = 'Supplier Account already exist.',
 }
 
 export enum ForbiddenMessage {

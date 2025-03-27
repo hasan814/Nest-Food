@@ -3,34 +3,21 @@ import { ApiProperty, PartialType } from "@nestjs/swagger";
 
 export class FoodDto {
   @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ type: 'string', format: 'binary' })
-  @IsNotEmpty()
+  @ApiProperty({ format: 'binary' })
   image: string;
 
   @ApiProperty()
-  @IsNumber()
-  @Min(0)
   price: number;
 
   @ApiProperty()
-  @IsNumber()
-  @Min(0)
-  @Max(100)
   discount: number;
 
   @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
   description: string;
 
   @ApiProperty()
-  @IsNumber()
-  @Min(0)
-  @Max(5)
   typeId: number;
 }
 

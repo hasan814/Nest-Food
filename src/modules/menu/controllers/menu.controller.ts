@@ -1,14 +1,17 @@
-import { Controller, Get, Post, Body, Param, Delete, UseInterceptors, UploadedFile, ParseIntPipe, Put } from '@nestjs/common';
+import { UseInterceptors, UploadedFile, ParseIntPipe, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { FoodDto, UploadFoodDto } from '../dto/food.dto';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { ImageValidationPipe } from 'src/common/utils/functions';
 import { SwaggerConsumes } from 'src/common/enums/swagger-consume';
+import { SupplierGuard } from 'src/common/decorators/auth.decorator';
 import { UploadFileS3 } from 'src/common/interceptors/upload-file.interceptor';
 import { MenuService } from '../services/menu.service';
 import { SkipAuth } from 'src/common/decorators/skip-auth.decorator';
 
 @Controller('menu')
 @ApiTags("Menu")
+@SupplierGuard()
 export class MenuController {
   constructor(private readonly menuService: MenuService) { }
 

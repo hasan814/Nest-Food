@@ -12,6 +12,7 @@ export class MenuTypeEntity extends BaseEntity {
 
   @Column()
   supplierId: number;
+
   @ManyToOne(() => SupplierEntity, supplier => supplier.menuTypes, { onDelete: "CASCADE" })
   supplier: SupplierEntity
 

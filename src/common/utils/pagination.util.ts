@@ -1,13 +1,11 @@
 export const paginationSolver = (page: number = 1, limit: number = 10) => {
   const validatedPage = Math.max(1, page);
   const validatedLimit = Math.max(1, limit);
-
   const skip = (validatedPage - 1) * validatedLimit;
-
   return {
+    skip,
     page: validatedPage,
     limit: validatedLimit,
-    skip,
   };
 };
 
@@ -17,11 +15,10 @@ export const paginationGenerator = (
   limit: number = 10
 ) => {
   const pageCount = limit > 0 ? Math.ceil(totalCount / limit) : 1;
-
   return {
-    totalCount,
     page,
-    countPerPage: limit,
     pageCount,
+    totalCount,
+    countPerPage: limit,
   };
 };

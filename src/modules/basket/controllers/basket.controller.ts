@@ -18,6 +18,12 @@ export class BasketController {
     return this.basketService.addToBasket(basketDto)
   }
 
+  @Post('/discount')
+  @ApiConsumes(SwaggerConsumes.UrlEncoded, SwaggerConsumes.Json)
+  addDiscountToBasket(@Body() discountDto: DiscountBasketDto) {
+    return this.basketService.addDiscount(discountDto)
+  }
+
   @Delete()
   @ApiConsumes(SwaggerConsumes.UrlEncoded, SwaggerConsumes.Json)
   removeFormBasket(@Body() basketDto: BasketDto) {

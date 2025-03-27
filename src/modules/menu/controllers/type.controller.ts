@@ -13,7 +13,7 @@ export class MenuTypeController {
   constructor(private readonly menuTypeService: MenuTypeService) { }
 
   @Post()
-  @ApiConsumes(SwaggerConsumes.MultipartData)
+  @ApiConsumes(SwaggerConsumes.UrlEncoded, SwaggerConsumes.Json)
   create(@Body() typeDto: MenuTypeDto) {
     return this.menuTypeService.create(typeDto)
   }

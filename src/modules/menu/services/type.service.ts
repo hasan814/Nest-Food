@@ -30,7 +30,7 @@ export class MenuTypeService {
       supplierId: id
     })
     await this.typeRepository.save(type)
-    return { message: PublicMessage.Created }
+    return { message: PublicMessage.MenuCreated }
   }
 
   async findAll() {
@@ -59,6 +59,6 @@ export class MenuTypeService {
     const { title } = typeDto
     if (title) type.title = title
     await this.typeRepository.save(type)
-    return { message: PublicMessage.Deleted }
+    return { message: PublicMessage.MenuDeleted }
   }
 }

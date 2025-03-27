@@ -25,7 +25,7 @@ export class MenuEntity extends BaseEntity {
   @Column({ type: "double", default: 0 })
   discount: number
 
-  @Column({ type: "double" })
+  @Column({ type: "double", nullable: true })
   score: number
 
   @Column()
@@ -36,7 +36,6 @@ export class MenuEntity extends BaseEntity {
 
   @Column({ default: true })
   is_active: boolean;
-
 
   @Column()
   supplierId: number
@@ -51,7 +50,7 @@ export class MenuEntity extends BaseEntity {
   feedbacks: FeedbackEntity[]
 
   @OneToMany(() => BasketEntity, basket => basket.food)
-  baskets: FeedbackEntity[]
+  baskets: BasketEntity[]
 
   @OneToMany(() => OrderItemEntity, orderItem => orderItem.food)
   orders: OrderItemEntity[];

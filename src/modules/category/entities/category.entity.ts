@@ -1,12 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { SupplierEntity } from 'src/modules/supplier/entities/supplier.entity';
 import { EntityName } from 'src/common/enums/entity.enum';
+import { BaseEntity } from 'src/common/abstract/base-entity';
 
 @Entity(EntityName.Category)
-export class CategoryEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class CategoryEntity extends BaseEntity {
   @Column()
   title: string;
 

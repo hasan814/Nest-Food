@@ -19,12 +19,12 @@ export class FeedbackEntity extends BaseEntity {
   @Column()
   socre: number
 
+  @CreateDateColumn()
+  created_at: Date
+
   @ManyToOne(() => UserEntity, user => user.feedbacks, { onDelete: "CASCADE" })
   user: UserEntity
 
   @ManyToOne(() => MenuEntity, food => food.feedbacks, { onDelete: "CASCADE" })
   food: MenuEntity
-
-  @CreateDateColumn()
-  created_at: Date
 }

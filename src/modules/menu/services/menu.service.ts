@@ -1,3 +1,7 @@
+import { NotFoundException, InternalServerErrorException, } from "@nestjs/common";
+import { NotFoundMessage, InternalServerMessage } from "src/common/enums/message.enum";
+import { AuthMessage, PublicMessage } from "src/common/enums/message.enum";
+import { Scope, Inject, Injectable } from "@nestjs/common";
 import { FoodDto, UploadFoodDto } from "../dto/food.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { MenuTypeService } from "./type.service";
@@ -8,30 +12,13 @@ import { S3Service } from "src/modules/s3/s3.service";
 import { Request } from "express";
 import { REQUEST } from "@nestjs/core";
 
-import {
-  Scope,
-  Inject,
-  Injectable,
-  NotFoundException,
-  InternalServerErrorException,
-} from "@nestjs/common";
 
-import {
-  AuthMessage,
-  PublicMessage,
-  NotFoundMessage,
-  InternalServerMessage,
-} from "src/common/enums/message.enum";
 
 @Injectable({ scope: Scope.REQUEST })
 export class MenuService {
   constructor(
-    @InjectRepository(MenuEntity)
-    private menuRepository: Repository<MenuEntity>,
-
-    @InjectRepository(MenuTypeEntity)
-    private menuTypeRepository: Repository<MenuTypeEntity>,
-
+    @InjectRepository(MenuEntity) private menuRepository: Repository<MenuEntity>,
+    @InjectRepository(MenuTypeEntity) private menuTypeRepository: Repository<MenuTypeEntity>,
     @Inject(REQUEST) private req: Request,
     private typeService: MenuTypeService,
     private s3Service: S3Service
@@ -48,11 +35,9 @@ export class MenuService {
   async create(foodDto: FoodDto, image: Express.Multer.File) {
     const supplierId = this.getUserId();
     const { name, description, discount, price, typeId } = foodDto;
-
     const type = await this.typeService.findOnById(typeId);
     let imageUrl: string,
       imageKey: string;
-
     try {
       const uploadResult = await this.s3Service.uploadFile(
         image,
@@ -63,25 +48,22 @@ export class MenuService {
     } catch (error) {
       throw new InternalServerErrorException(InternalServerMessage.DatabaseError);
     }
-
     const newItem = this.menuRepository.create({
       name,
       price,
       discount,
-      description,
       supplierId,
+      description,
+      key: imageKey,
       typeId: type.id,
       image: imageUrl,
-      key: imageKey,
     });
-
+    await this.menuRepository.save(newItem);
     try {
-      await this.menuRepository.save(newItem);
     } catch (error) {
       throw new InternalServerErrorException(InternalServerMessage.DatabaseError);
     }
-
-    return { message: PublicMessage.Created };
+    return { message: PublicMessage.MenuCreated };
   }
 
   async findAll(supplierId: number) {
@@ -95,7 +77,7 @@ export class MenuService {
     const supplierId = this.getUserId();
     const item = await this.menuRepository.findOneBy({ id, supplierId });
     if (!item)
-      throw new NotFoundException(NotFoundMessage.NotFoundCategory);
+      throw new NotFoundException(NotFoundMessage.NotFoundMenu);
     return item;
   }
 
@@ -115,12 +97,14 @@ export class MenuService {
       },
     });
     if (!item)
-      throw new NotFoundException(NotFoundMessage.NotFoundCategory);
+      throw new NotFoundException(NotFoundMessage.NotFoundMenu);
     return item;
   }
 
   async getOne(id: number) {
+    console.log(id)
     const item = await this.menuRepository.findOne({ where: { id } });
+    console.log(item)
     if (!item)
       throw new NotFoundException(NotFoundMessage.NotFoundCategory);
     return item;
@@ -129,7 +113,7 @@ export class MenuService {
   async delete(id: number) {
     await this.checkExist(id);
     await this.menuRepository.delete({ id });
-    return { message: PublicMessage.Deleted };
+    return { message: PublicMessage.DeletedMenu };
   }
 
   async update(
@@ -139,18 +123,15 @@ export class MenuService {
   ) {
     const item = await this.checkExist(id);
     const { name, description, discount, price, typeId } = foodDto;
-
     if (typeId && !isNaN(typeId)) {
       const type = await this.typeService.findOnById(typeId);
       item.typeId = type.id;
     }
-
     if (name) item.name = name;
     if (description) item.description = description;
     if (typeof price === "number" && price >= 0) item.price = price;
     if (typeof discount === "number" && discount >= 0 && discount <= 100)
       item.discount = discount;
-
     if (image) {
       try {
         const uploadResult = await this.s3Service.uploadFile(
@@ -163,13 +144,11 @@ export class MenuService {
         throw new InternalServerErrorException(InternalServerMessage.UpdateFailed);
       }
     }
-
     try {
       await this.menuRepository.save(item);
     } catch (error) {
       throw new InternalServerErrorException(InternalServerMessage.DatabaseError);
     }
-
     return { message: PublicMessage.Updated };
   }
 }

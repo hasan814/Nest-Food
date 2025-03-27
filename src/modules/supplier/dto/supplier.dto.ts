@@ -1,14 +1,7 @@
+import { IsNotEmpty, IsString, IsNumber, IsMobilePhone } from 'class-validator';
+import { IsOptional, IsIdentityCard, IsEmail } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-import {
-  IsNotEmpty,
-  IsString,
-  IsNumber,
-  IsMobilePhone,
-  IsOptional,
-  IsIdentityCard,
-  IsEmail,
-} from 'class-validator';
 
 export class SupplierSignDto {
   @ApiProperty()

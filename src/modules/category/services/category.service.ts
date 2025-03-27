@@ -1,14 +1,14 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { ConflictMessage, NotFoundMessage, PublicMessage } from 'src/common/enums/message.enum';
 import { paginationGenerator, paginationSolver } from 'src/common/utils/pagination.util';
+import { DeepPartial, Repository } from 'typeorm';
 import { isBoolean, toBoolean } from 'src/common/utils/functions';
 import { CreateCategoryDto } from '../dto/category.dto';
+import { UpdateCategoryDto } from '../dto/update-category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from '../entities/category.entity';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { DeepPartial, Repository } from 'typeorm';
 import { S3Service } from 'src/modules/s3/s3.service';
-import { UpdateCategoryDto } from '../dto/update-category.dto';
 
 @Injectable()
 export class CategoryService {
@@ -26,7 +26,7 @@ export class CategoryService {
     let parent: CategoryEntity | null = null
     if (parentId && !isNaN(parentId)) parent = await this.findOneById(+parentId)
     await this.categoryRepository.insert({ title, slug, show, image: Location, parentId: parent?.id, imageKey: Key })
-    return { message: PublicMessage.Created }
+    return { message: PublicMessage.CategoryCreated }
   }
 
   async findAll(paginationDto: PaginationDto) {
@@ -58,9 +58,10 @@ export class CategoryService {
   async update(id: number, updateCategoryDto: UpdateCategoryDto, image: Express.Multer.File) {
     const { parentId, show, slug, title } = updateCategoryDto
     const category = await this.findOneById(id)
+    console.log(category)
     const updateObject: DeepPartial<CategoryEntity> = {}
-    if (!image) {
-      const { Location, Key } = await this.s3Service.uploadFile(image, 'category')
+    if (image) {
+      const { Location, Key } = await this.s3Service.uploadFile(image, 'food-image')
       if (Location) {
         updateObject['image'] = Location
         updateObject['imageKey'] = Key
@@ -84,7 +85,7 @@ export class CategoryService {
   }
 
   async remove(id: number) {
-    const category = await this.findOneById(id)
+    await this.findOneById(id)
     await this.categoryRepository.delete({ id })
     return { message: PublicMessage.Deleted }
   }

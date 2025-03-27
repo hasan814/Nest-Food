@@ -23,7 +23,7 @@ export class S3Service {
     const ext = extname(file.originalname)
     return await this.s3.upload({
       Bucket: process.env.S3_BUCKET_NAME,
-      Key: `${folderName}/${Date.now()}`,
+      Key: `${folderName}/${Date.now()}${ext}`,
       Body: file.buffer
     }).promise()
   }

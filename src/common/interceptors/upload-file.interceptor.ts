@@ -3,8 +3,8 @@ import { memoryStorage } from "multer"
 import { MulterField } from "@nestjs/platform-express/multer/interfaces/multer-options.interface"
 
 
-export const UploadFileS3 = (fileName: string) => {
-  return class UploadUtility extends FileInterceptor(fileName, {
+export const UploadFileS3 = (filedName: string) => {
+  return class UploadUtility extends FileInterceptor(filedName, {
     storage: memoryStorage()
   }) { }
 }

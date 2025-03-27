@@ -1,10 +1,9 @@
-import { InjectRepository } from '@nestjs/typeorm';
-import { CreateDiscountDto } from '../dto/create-discount.dto';
-import { UpdateDiscountDto } from '../dto/update-discount.dto';
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { DiscountEntity } from '../entities/discount.entity';
 import { BadRequestMessage, ConflictMessage, NotFoundMessage, PublicMessage } from 'src/common/enums/message.enum';
 import { DeepPartial, Repository } from 'typeorm';
+import { CreateDiscountDto } from '../dto/create-discount.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DiscountEntity } from '../entities/discount.entity';
 
 @Injectable()
 export class DiscountService {
@@ -23,23 +22,21 @@ export class DiscountService {
       const time = 1000 * 60 * 60 * 24 * parseInt(expires_in.toString());
       discountObject['expires_in'] = new Date(new Date().getTime() + time);
     }
-
     if (limit && !isNaN(parseInt(limit.toString()))) discountObject['limit'] = limit
-
     const discount = this.discountRepository.create(discountObject)
     await this.discountRepository.save(discount)
-    return { message: PublicMessage.Created };
+    return { message: PublicMessage.DiscountCreated };
   }
 
   async checkExistCode(code: string) {
     const discount = await this.discountRepository.findOneBy({ code })
-    if (discount) throw new ConflictException(ConflictMessage.Exist)
+    if (discount) throw new ConflictException(ConflictMessage.CodeAlreadyUsed)
     return discount
   }
 
   async findOneByCode(code: string) {
     const discount = await this.discountRepository.findOneBy({ code })
-    if (!discount) throw new NotFoundException(NotFoundMessage.OtpNotFound)
+    if (!discount) throw new NotFoundException(NotFoundMessage.CodeNotFound)
     return discount
   }
 
@@ -51,7 +48,7 @@ export class DiscountService {
     const discount = await this.discountRepository.findOneBy({ id });
     if (!discount) throw new BadRequestException(BadRequestMessage.SomeThingWrong);
     await this.discountRepository.delete({ id });
-    return { message: PublicMessage.Deleted };
+    return { message: PublicMessage.DiscountDeleted };
   }
 
 }

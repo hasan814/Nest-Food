@@ -35,17 +35,17 @@ export class SupplierService {
   async signup(supplierSignDto: SupplierSignDto) {
     const { categoryId, city, invite_code, manager_family, manager_name, phone, store_name } = supplierSignDto
     const supplier = await this.supplierRepository.findOneBy({ phone })
-    if (supplier) throw new ConflictException(ConflictMessage.Exist)
+    if (supplier) throw new ConflictException(ConflictMessage.ExistSupplier)
     const category = await this.categoryService.findOneById(categoryId)
     let agent: SupplierEntity | null = null
     if (invite_code) agent = await this.supplierRepository.findOneBy({ invite_code })
     const mobileNumber = parseInt(phone)
     const accountData: Partial<SupplierEntity> = {
-      manager_family,
-      manager_name,
-      phone,
       city,
+      phone,
       store_name,
+      manager_name,
+      manager_family,
       categoryId: category.id,
       invite_code: mobileNumber.toString(32).toUpperCase()
     };
@@ -117,7 +117,7 @@ export class SupplierService {
     supplier = await this.supplierRepository.findOneBy({ email })
     if (supplier && supplier.id !== id) throw new ConflictException(ConflictMessage.EmailExist)
     await this.supplierRepository.update({ id }, { email, national_code, status: SupplierStatus.SupplementaryInfo })
-    return { message: PublicMessage.Updated }
+    return { message: PublicMessage.UpdatedInfo }
   }
 
   async uploadDocuments(files: TDocument) {
@@ -131,7 +131,7 @@ export class SupplierService {
     if (docsResult) supplier.document = docsResult.Location;
     supplier.status = SupplierStatus.UploadedDocument;
     await this.supplierRepository.save(supplier);
-    return { message: PublicMessage.Created };
+    return { message: PublicMessage.UploadDoc };
   }
 
 }

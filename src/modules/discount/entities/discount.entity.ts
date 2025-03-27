@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from "typeorm";
+import { BasketEntity } from "src/modules/basket/entities/basket.entity";
 import { BaseEntity } from "src/common/abstract/base-entity";
 import { EntityName } from "src/common/enums/entity.enum";
-import { BasketEntity } from "src/modules/basket/entities/basket.entity";
 
 
 @Entity(EntityName.Discount)
@@ -31,5 +31,5 @@ export class DiscountEntity extends BaseEntity {
   active: boolean
 
   @OneToMany(() => BasketEntity, basket => basket.discount)
-  baskets: BasketEntity
+  baskets: BasketEntity[]
 }

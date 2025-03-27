@@ -1,3 +1,5 @@
+import { Controller, UploadedFile, ParseIntPipe, UseInterceptors } from '@nestjs/common';
+import { Delete, Get, Post, Body, Query, Patch, Param } from '@nestjs/common';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { ImageValidationPipe } from 'src/common/utils/functions';
 import { CreateCategoryDto } from '../dto/category.dto';
@@ -6,31 +8,18 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { SwaggerConsumes } from 'src/common/enums/swagger-consume';
 import { CategoryService } from '../services/category.service';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { UploadFileS3 } from 'src/common/interceptors/upload-file.interceptor';
 import { Pagination } from 'src/common/decorators/pagination.decorator';
 
-import {
-  Controller,
-  Post,
-  Body,
-  UploadedFile,
-  UseInterceptors,
-  Get,
-  Query,
-  Patch,
-  ParseIntPipe,
-  Param,
-  Delete,
-} from '@nestjs/common';
 
 @Controller('category')
 @ApiTags('Category')
 export class CategoryController {
-
   constructor(private readonly categoryService: CategoryService) { }
 
   @Post()
-  @UseInterceptors(FileInterceptor('image'))
   @ApiConsumes(SwaggerConsumes.MultipartData)
+  @UseInterceptors(UploadFileS3('image'))
   create(
     @Body() createCategoryDto: CreateCategoryDto,
     @UploadedFile(ImageValidationPipe()) image: Express.Multer.File,
@@ -50,7 +39,7 @@ export class CategoryController {
   }
 
   @Patch(':id')
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(UploadFileS3('image'))
   @ApiConsumes(SwaggerConsumes.MultipartData)
   update(
     @Param('id', ParseIntPipe) id: number,
