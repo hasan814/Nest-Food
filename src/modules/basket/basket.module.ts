@@ -12,5 +12,6 @@ import { Module } from '@nestjs/common';
   imports: [AuthModule, MenuModule, TypeOrmModule.forFeature([BasketEntity, DiscountEntity])],
   controllers: [BasketController],
   providers: [BasketService, DiscountService],
+  exports: [BasketService],
 })
 export class BasketModule { }
